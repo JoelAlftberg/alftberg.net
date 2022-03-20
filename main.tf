@@ -14,35 +14,55 @@ provider "linode" {
 # Create a linode instance
 resource "linode_instance" "instance" {
     label = var.instance-label
-    image =  var.image
     region = var.region
     type = var.instance-type
-    authorized_keys = var.ssh-key
-    root_pass = var.root-pass
     tags = var.instance-tags
-}
 
-# Mount the persistent volume to our instance
-resource "linode_volume" "persistent_volume" {
-    label = var.persistent-volume-label
-    region = var.region
-    linode_id = linode_instance.instance.id
-}
+    # Boot volume
+    disk {
+        label = "boot"
+        size = var.root-disk-size
+        image =  var.image
+        authorized_keys = var.ssh-pub-keys
+        root_pass = var.root-password
+    }
+
+    # Attach the persistent volume
+    config {
+        label = "attach-persistent-volume"
+
+        devices {
+            sda {
+                disk_label = "boot"
+            }
+            sdb {
+                volume_id  = var.persistent-volume-id
+            }
+        }
+
+        root_device = "/dev/sda"
+    }
+
+} # End of instance
 
 # Add your domain to Linode
 # Note: make sure you have pointed your domain towards Linodes nameservers at your registrar
 resource "linode_domain" "domain" {
     type = "master"
     domain = var.domain-name
-    soa_email = var.linode-soa-email
+    soa_email = var.domain-soa-email
 
 }
 
 # Add A records for you domains DNS zone
 resource "linode_domain_record" "domain-record" {
+    # Iterate through the list of records
+    for_each = var.domain-records
+
     domain_id = linode_domain.domain.id
     record_type = "A"
-    target = var.linode_instance.instance.ip_address
-    name = var.domain-records
+    target = linode_instance.instance.ip_address
+
+    name = each.value
 }
 

@@ -8,6 +8,12 @@ variable "instance-label" {
     description = "Name that will be used to identify your Linode"
 }
 
+variable "root-disk-size" {
+    type = number
+    default = 30000
+    description = "Size of the root volume"
+}
+
 variable "image" {
     type = string
     default = "linode/debian11"
@@ -22,26 +28,28 @@ variable "region" {
 
 variable "instance-type" {
     type = string
-    description = "Linode Types, list them with $ curl https://api.linode.com/v4/types"
+    description = "Linode Types, list them with $ curl https://api.linode.com/v4/linode/types"
 }
 
-variable "ssh-pub-key" {
-    type = string
+variable "ssh-pub-keys" {
+    type = list(string)
     description = "Your SSH Public key"
 }
 
-variable "root-pass" {
+variable "root-password" {
     type = string
     description = "Set this to something secure and store it in a password manager, and configure SSHD to not accept root login remotely"
 }
 
 variable "instance-tags" {
-    type = string
+    type = list(string)
     description = "Tags for your instance, to easier filter/separate them in Linode"
 }
 
-variable "persistent-volume-label" {
-    description = "Name that identifies your previously created persistent volume"
+variable "persistent-volume-id" {
+    type = number
+    # TODO: Add script that gets volume-id via curl automatically depending on new variable persistent-volume-label
+    description = "Number that identifies your previously created persistent volume, can be gotten via API $ curl -H 'Authorization: Bearer $TOKEN' https://api.linode.com/v4/volumes"
 }
 
 variable "domain-name" {
@@ -49,7 +57,13 @@ variable "domain-name" {
     description = "A registered domain name"
 }
 
-variable "domain-record"  {
-    type = list(string)
-    description = "List of A records you want to add to the domain"
+variable "domain-soa-email" {
+    type = string
+    description = "SOA E-mail address for your domain"
 }
+
+variable "domain-records"  {
+    type = map(string)
+    description = "Map of A records you want to add to the domain, variable is defined like this for example ['www', '@']"
+}
+
