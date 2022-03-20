@@ -67,3 +67,7 @@ variable "domain-records"  {
     description = "Map of A records you want to add to the domain, variable is defined like this for example ['www', '@']"
 }
 
+variable "domain-records-ttl" {
+    type = number
+    description = "Time To Live for the records created"
+}

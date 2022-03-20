@@ -51,7 +51,6 @@ resource "linode_domain" "domain" {
     type = "master"
     domain = var.domain-name
     soa_email = var.domain-soa-email
-
 }
 
 # Add A records for you domains DNS zone
@@ -62,6 +61,7 @@ resource "linode_domain_record" "domain-record" {
     domain_id = linode_domain.domain.id
     record_type = "A"
     target = linode_instance.instance.ip_address
+    ttl_sec = var.domain-records-ttl
 
     name = each.value
 }
