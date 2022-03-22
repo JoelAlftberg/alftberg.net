@@ -43,6 +43,17 @@ resource "linode_instance" "instance" {
         root_device = "/dev/sda"
     }
 
+    connection {
+        type = "ssh"
+        user = "root"
+        password = var.root-password
+        host = linode_instance.instance.ip_address
+    }
+
+    provisioner "remote-exec" {
+        inline = ["sudo apt update", "sudo apt upgrade -y", "echo Done!"]
+    }
+
 } # End of instance
 
 # Add your domain to Linode
@@ -64,5 +75,18 @@ resource "linode_domain_record" "domain-record" {
     ttl_sec = var.domain-records-ttl
 
     name = each.value
+}
+
+# Run Ansible playbook which includes all roles
+resource "null_resource" "ansible-play" {
+
+    triggers = {
+        always_run = timestamp()
+
+    }
+    provisioner "local-exec" {
+        command = "ansible-playbook -i ${local_file.ansible-inventory.filename} ${var.ansible-playbook} --private-key=${var.ssh-private}"
+    }
+
 }
 

@@ -36,6 +36,12 @@ variable "ssh-pub-keys" {
     description = "Your SSH Public key"
 }
 
+variable "ssh-private-key" {
+    type = string
+    description = "SSH Private key to be used with ansible, should correspond with previously entered public key"
+    default = "~/.ssh/id_rsa"
+}
+
 variable "root-password" {
     type = string
     description = "Set this to something secure and store it in a password manager, and configure SSHD to not accept root login remotely"
