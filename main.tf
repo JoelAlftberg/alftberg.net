@@ -51,7 +51,7 @@ resource "linode_instance" "instance" {
     }
 
     provisioner "remote-exec" {
-        inline = ["sudo apt update", "sudo apt upgrade -y", "echo Done!"]
+        inline = ["sudo apt update", "sudo apt upgrade -y", "sudo apt install python3 -y", echo Done!"]
     }
 
 } # End of instance

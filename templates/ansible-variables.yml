@@ -1,0 +1,15 @@
+# Certbot section
+certbot_email: 
+certbot_autorenew: true
+certbot_domain:
+  - alftberg.net
+  - www.alftberg.net
+
+# Nginx section
+nginx_root_dir: /etc/nginx/
+
+
+# Install
+# --nginx --non-interactive --agree-tos -m {{ certbot_email }} --nginx-server-root {{ nginx_root_dir }} -d {{ certbot_domain[0] }} -d {{ certbot_domain[1] }}
+# Autorenew
+# --pre-hook "command to shut down nginx" --post-hook "command to start nginx" 

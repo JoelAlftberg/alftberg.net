@@ -1,0 +1,3 @@
+---
+certbot_email: "{{ }}"
+certbot_autorenew_user: "{{ ansible_user }}"
