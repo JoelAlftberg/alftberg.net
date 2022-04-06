@@ -1,12 +1,21 @@
 ---
-- name: Install certbot
-  apt: 
-    name: {{ item }}
-    state: present
-  with_items:
-    - certbot
-    - python3-certbot-nginx
-
 - name: Check if certificate already exists
-  register: letsencrypt_cert
+  stat:
+    path: /etc/letsencrypt/live/alftberg.net
+  register: cert
+
+- name: Genereate certificates
+    command: /usr/bin/certbot --standalone --non-interactive --agree-tos -m {{ certbot_email }} -d {{ domains[0] }} -d {{ domains[1] }}
+  when: not cert.stat.exists
+
+- name: Create crontab job for certificate renewal
+  cron:
+    name: Renew certificate
+    minute: "0"
+    hour: "0"
+    job: "/usr/bin/certbot renew --quiet"
+
+
+
+  
   

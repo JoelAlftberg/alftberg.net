@@ -1,7 +1,7 @@
 ---
-- name: Install nginx
-  apt:
-    name: nginx
-    state: present
-
-- name: 
+- name: Create config
+  template:
+    src:
+    dest:
+    
+  

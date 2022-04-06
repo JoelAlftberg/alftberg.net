@@ -1,9 +1,9 @@
 # Certbot section
 certbot_email: 
 certbot_autorenew: true
-certbot_domain:
-  - alftberg.net
-  - www.alftberg.net
+domains:
+  - www.domain.net
+  - domain.net
 
 # Nginx section
 nginx_root_dir: /etc/nginx/
