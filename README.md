@@ -5,9 +5,10 @@ The goal is to be able to quickly spin up a website, mailserver and trilium host
 through simply running terraform. All roles and configuration files should be writte in a way that makes them idempotent. \
 
 
-Currently working on 
-- [ ] Nginx + Let's Encrypt ansible role
-- [ ] Trilium role
-- [ ] Postfix + Dovecot role
-- [ ] Kanboard role
-- [ ] Firefly III role
+
+Ansible roles to be included: 
+- [ ] Nginx + Let's Encrypt
+- [ ] Trilium 
+- [ ] Postfix + Dovecot 
+- [ ] Kanboard 
+- [ ] Firefly III 
