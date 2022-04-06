@@ -1,6 +1,20 @@
 ---
 - name: Create nginx config from template
   template:
-    src: templates/nginx.j2
-    dest: /etc/nginx/sites-available/{{ domains[0] }}.conf
+    src: "templates/nginx.j2"
+    dest: "/etc/nginx/sites-available/{{ domain }}.conf"
     mode: '0744'
+
+- name: Enable {{ domain }} site
+  file:
+    src: "/etc/nginx/sites-available/{{ domain }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ domain }}.conf"
+    state: link
+
+- name: Make sure default conf symlink is gone
+  file:
+    path: "/etc/nginx/sites-enabled/default"
+    state: absent
+
+- name: Reload nginx
+  command: "nginx -s reload"

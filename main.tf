@@ -51,7 +51,7 @@ resource "linode_instance" "instance" {
     }
 
     provisioner "remote-exec" {
-        inline = ["sudo apt update", "sudo apt upgrade -y", "sudo apt install python3 -y", echo Done!"]
+        inline = ["sudo apt update", "sudo apt upgrade -y", "sudo apt install python3 -y", "echo Done!"]
     }
 
 } # End of instance
@@ -85,7 +85,7 @@ resource "null_resource" "ansible-play" {
 
     }
     provisioner "local-exec" {
-        command = "ansible-playbook -i ${local_file.ansible-inventory.filename} ${var.ansible-playbook} --private-key=${var.ssh-private}"
+        command = "ansible-playbook -i ${local_file.ansible-inventory.filename} ${var.ansible-playbook} --private-key=${var.ssh-priv-key}"
     }
 
 }

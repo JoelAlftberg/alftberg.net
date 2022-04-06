@@ -1,10 +1,10 @@
 resource "local_file" "ansible-inventory" {
 
     content = templatefile(
-        "templates/template-inventory.yml", 
+        "templates/inventory.tftpl", 
         {
             hostname = var.domain-name,
-            ansible_host = var.linode_instance.instance.ip_address,
+            ansible_host = linode_instance.instance.ip_address,
             ansible_user = "root"
         }
     )   

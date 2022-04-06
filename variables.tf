@@ -36,7 +36,7 @@ variable "ssh-pub-keys" {
     description = "Your SSH Public key"
 }
 
-variable "ssh-private-key" {
+variable "ssh-priv-key" {
     type = string
     description = "SSH Private key to be used with ansible, should correspond with previously entered public key"
     default = "~/.ssh/id_rsa"
@@ -76,4 +76,8 @@ variable "domain-records"  {
 variable "domain-records-ttl" {
     type = number
     description = "Time To Live for the records created"
+}
+
+variable "ansible-playbook" {
+    description = "Name of the ansible playbook to run after provisioning instance"
 }

@@ -2,10 +2,23 @@
 - name: Install required packages
   include_tasks: install.yml
 
+- name: Configure nginx
+  include_tasks: configure.yml
+
+- name: Add index.html
+  copy:
+    src: templates/index.html
+    dest: /var/www/html/
+    mode: '0644'
+
 - name: Generate certificates
   include_tasks: letsencrypt.yml
 
-- name: Configure nginx
-  include_tasks: configure.yml
+- name: Restart Nginx
+  systemd:
+    name: nginx
+    state: restarted
     
+
+
   

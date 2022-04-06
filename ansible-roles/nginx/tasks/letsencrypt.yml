@@ -5,8 +5,18 @@
   register: cert
 
 - name: Genereate certificates
-    command: /usr/bin/certbot --standalone --non-interactive --agree-tos -m {{ certbot_email }} -d {{ domains[0] }} -d {{ domains[1] }}
+  command: /usr/bin/certbot certonly --standalone --non-interactive --agree-tos -m "{{ certbot_email }}" -d "{{ domain }}" -d "{{ domain_www }}"
   when: not cert.stat.exists
+
+- name: Insert certificates into nginx config
+  blockinfile:
+    path: "/etc/nginx/sites-available/{{ domain }}.conf"
+    block: |
+      listen  443 ssl;
+      ssl_certificate /etc/letsencrypt/live/{{ domain }}/fullchain.pem;
+      ssl_certificate_key /etc/letsencrypt/live/{{ domain }}/privkey.pem;
+      
+    insertafter: "server_name {{ domain }} {{ domain_www }};"
 
 - name: Create crontab job for certificate renewal
   cron:

@@ -1,20 +1,10 @@
-error_log logs/error.log;
+server {
+    listen  80 default_server;
+    root /var/www/html;
 
-http {
+    server_name {{ domain }} {{ domain_www }};
 
-    server {
-        listen  80 default_server;
-        listen  443 ssl;
-        root /var/www/html;
-
-        server_name {{ domain }} {{ domain_www }};
-
-        ssl_certificate /etc/letsencrypt/live/{{ domain }}/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/{{ domain }}/privkey.pem;
-
-        if ($scheme != https){
-            return 301 https://$host$request_uri;
-        }
+    if ($scheme != https){
+        return 301 https://$server_name$request_uri;
     }
-
 }
