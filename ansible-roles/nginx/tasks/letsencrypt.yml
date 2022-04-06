@@ -12,7 +12,7 @@
   cron:
     name: Renew certificate
     minute: "0"
-    hour: "0"
+    hour: "2"
     job: "/usr/bin/certbot renew --quiet"
 
 

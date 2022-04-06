@@ -1,0 +1,6 @@
+---
+- name: Create nginx config from template
+  template:
+    src: templates/nginx.j2
+    dest: /etc/nginx/sites-available/{{ domains[0] }}.conf
+    mode: '0744'

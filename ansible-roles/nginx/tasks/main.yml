@@ -1,7 +1,11 @@
 ---
-- name: Create config
-  template:
-    src:
-    dest:
+- name: Install required packages
+  include_tasks: install.yml
+
+- name: Generate certificates
+  include_tasks: letsencrypt.yml
+
+- name: Configure nginx
+  include_tasks: configure.yml
     
   
